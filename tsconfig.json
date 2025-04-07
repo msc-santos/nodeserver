@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "commonjs",
+    "lib": ["ES2020"],
+    "outDir": "./dist",
+    "rootDir": "./",
+    "strict": true,
+    "esModuleInterop": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "resolveJsonModule": true,
+    "strictPropertyInitialization": false,
+    "baseUrl": "./", // Define a base URL para os caminhos relativos
+    "paths": {
+      "src/*": ["src/*"],
+      "*": ["./*"] // Adiciona suporte para resolver arquivos na raiz
+    }
+  }
+}
