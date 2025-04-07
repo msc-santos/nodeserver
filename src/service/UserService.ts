@@ -3,6 +3,7 @@ import { Service } from "typedi";
 import { Repository } from "typeorm";
 import { User } from "../model/User";
 import { AppDataSource } from "../../ormconfig";
+import { NotFoundError } from "node_modules/routing-controllers/types";
 
 @Service()
 export class UserService {
@@ -24,11 +25,24 @@ export class UserService {
     return this.userRepository.save(user);
   }
 
-  updateUser(id: string, user: User): Promise<User | null> {
+  async updateUser(id: string, user: User): Promise<User | null> {
+    const userExisti = await this.getUserById(id);
+
+    if (!userExisti) {
+      throw new Error(`User with id ${id} not found`);
+    }
+
     return this.userRepository.save({ ...user, id });
   }
 
-  deleteUser(id: string): Promise<void> {
-    return this.userRepository.delete(id).then(() => undefined);
+  async deleteUser(id: string): Promise<boolean | void> {
+    const user = await this.getUserById(id);
+
+    if (!user) {
+      throw new Error(`User with id ${id} not found`);
+    }
+
+    await this.userRepository.delete(id);
+    return true;
   }
 }
